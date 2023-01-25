@@ -43,7 +43,7 @@ Para usar MLA Picker, siga estas etapas:
 ```
 
 > Já existe um dataset para efetuar os testes. Mas pode ser passado o caminho para qualquer dataset, que já tenha sido tratado.
-
+> Os datasets informados devem respeitar a seguinte ordem para as variáveis: X_train, y_train, X_test, y_test
 ## 📝 Licença
 
 Esse projeto está sob licença. Veja o arquivo [LICENÇA](LICENSE) para mais detalhes.
