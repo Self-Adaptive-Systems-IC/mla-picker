@@ -28,7 +28,7 @@ def print_table(results: list, agms: dict):
     print("***********************************")
     
 def menu():
-    print("--- MENU ---")
+    print("\n\033[1m--- MENU ---\033[0m")
     print("0: Melhor algoritmo")
     print("1: Tabela com as médias")
     option = int(input("Select: "))

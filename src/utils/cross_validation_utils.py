@@ -21,7 +21,7 @@ def cross_validation(X_data, y_data):
     results_random_forest = []
     results_svm = []
     loader = Loader(
-            f"・ Loading \033[1m cross validation \033[0m",
+            f"・ Running \033[1m cross validation \033[0m",
             f"・ The \033[1m cross validation \033[0m is done!!!",
             0.05
         ).start()

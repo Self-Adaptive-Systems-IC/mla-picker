@@ -17,4 +17,6 @@ def find_best_agm(results, agms):
         if m > max['value']:
             max['agm'] = agms[i]
             max['value'] = m
-    print(f"Best agm is {max['agm']} whith mean equal to {max['value']}")
+    # Print results
+    print(f"\nBest agm is \033[1m{max['agm'].replace('_', ' ')}\033[0m")
+    print(f"Mean equal to \033[1m{max['value']:.4}\033[0m\n")
