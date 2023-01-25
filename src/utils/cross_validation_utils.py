@@ -7,7 +7,7 @@ from utils.Loader import Loader
 def cross_validation(X_data, y_data):
     """
     Function to execute grid search for decision tree and random forest.
-    Return an array of array with the accuracy of each algorithm
+    Return an array of array with the accuracy for each algorithm
 
     Parameters
     ----------
