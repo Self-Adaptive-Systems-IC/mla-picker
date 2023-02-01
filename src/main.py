@@ -8,6 +8,7 @@ import statistics
 
 from utils.cross_validation_utils import cross_validation
 from utils.find_best_agm_utils import find_best_agm
+from utils.teste_tukey_utils import tukey_test
 
 agms = {0:'tree', 1:'random_forest'}
 
@@ -47,9 +48,10 @@ def main(file_path: str):
     X_data, y_data = read_file(file_path)
     # Exacute cross validation between 2 agm
     results = cross_validation(X_data, y_data)
-    
-    op = menu()
-    foo_helper[op](results, agms)
+    tukey_test(results, agms)
+    # op = menu()
+    # foo_helper[op](results, agms)
+    # find_best_agm(results, agms)
 
 if __name__ == "__main__":
     try:
