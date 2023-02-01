@@ -10,7 +10,7 @@ from utils.cross_validation_utils import cross_validation
 from utils.find_best_agm_utils import find_best_agm
 from utils.teste_tukey_utils import tukey_test
 
-agms = {0:'tree', 1:'random_forest'}
+agms = {0:'tree', 1:'random_forest', 2:'svc'}
 
 # Define pickle file squeme
 def read_file(file: str):
@@ -43,11 +43,12 @@ foo_helper = {
 }
 
 def main(file_path: str):
-    # file_path = './titanic.pkl'
+    print(f"Running for the dataset {file_path}")
     # Get X and y values from file
     X_data, y_data = read_file(file_path)
-    # Exacute cross validation between 2 agm
+    # Exacute cross validation between agms
     results = cross_validation(X_data, y_data)
+    # Using tukey test to find the best agm
     tukey_test(results, agms)
     # op = menu()
     # foo_helper[op](results, agms)

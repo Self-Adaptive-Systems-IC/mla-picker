@@ -17,10 +17,10 @@ def cross_validation(X_data, y_data):
         y_data : array
             The target variable to try predict in the case of supervised learning.
     """
-    n_size = 10
+    n_size = 100
     results_tree = []
     results_random_forest = []
-    # results_svm = []
+    results_svm = []
     loader = Loader(
             f"・ Running \033[1m cross validation \033[0m",
             f"・ The \033[1m cross validation \033[0m is done!!!",
@@ -37,10 +37,10 @@ def cross_validation(X_data, y_data):
         scores_random_forest = cross_val_score(random_forest, X_data, y_data, cv=kfold)
         results_random_forest.append(scores_random_forest.mean())
         # For svc
-        # svm = SVC(kernel = 'rbf', C = 100.0, tol=0.001)
-        # scores_svm = cross_val_score(svm, X_data, y_data, cv=kfold)
-        # results_svm.append(scores_svm.mean())
+        svm = SVC(kernel = 'rbf', C = 100.0, tol=0.001)
+        scores_svm = cross_val_score(svm, X_data, y_data, cv=kfold)
+        results_svm.append(scores_svm.mean())
     loader.stop()
-    results = [results_tree, results_random_forest]
-    # results = [results_tree, results_random_forest, results_svm]
+    # results = [results_tree, results_random_forest]
+    results = [results_tree, results_random_forest, results_svm]
     return results
