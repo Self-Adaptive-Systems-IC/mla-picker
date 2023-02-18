@@ -50,6 +50,7 @@ def main(file_path: str):
     results = cross_validation(X_data, y_data)
     # Using tukey test to find the best agm
     tukey_test(results, agms)
+    print_table(results, agms)
     # op = menu()
     # foo_helper[op](results, agms)
     # find_best_agm(results, agms)

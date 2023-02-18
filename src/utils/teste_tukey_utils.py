@@ -26,6 +26,7 @@ def tukey_test(results, agms):
     # Execute tukey test to compare elements pair to pair
     comp_agm = MultiComparison(results_df['accuracy'], results_df['agm'])
     test_tukey = comp_agm.tukeyhsd()
+    print("\n", test_tukey, "\n")
     # Create a data frame with th columns reject1, reject2 and total_sum
     tukey_data = handle_tukey_result(test_tukey)
     # Get the max value of column total_sum
