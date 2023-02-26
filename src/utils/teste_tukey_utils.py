@@ -5,6 +5,7 @@ from statsmodels.stats.multicomp import MultiComparison
 from statsmodels.formula.api import ols
 from utils.find_best_agm_utils import find_best_agm
 
+# Main function that execute tukey test to find the best agm
 def tukey_test(results, agms):
     alpha = 0.05
     _, p = f_oneway(results[0], results[1])
@@ -30,7 +31,7 @@ def tukey_test(results, agms):
     
     print("\n", test_tukey, "\n")
     # Create a data frame with th columns reject1, reject2 and total_sum
-    tukey_data = handle_tukey_result(test_tukey)
+    tukey_data = filter_tukey_result(test_tukey)
     agms_compare = find_agms_to_compare(tukey_data)
     
     best_results = []
@@ -44,18 +45,9 @@ def tukey_test(results, agms):
         i += 1
     
     find_best_agm(best_results, agms2)  
-    # Get the max value of column total_sum
-    # max_value = tukey_data['total_sum'].max()
-    # Get the line who have the max values of total_sum
-    # ids = tukey_data[tukey_data.iloc[:, 2] == max_value].index
-    # Find the max accuracy
-    # best_results = []
-    # for element in ids:
-    #     key=list(agms.keys())[list(agms.values()).index(element)]
-    #     best_results.append(results[key])
-    # find_best_agm(best_results, agms)
-    
-def handle_tukey_result(test_tukey):    
+
+# Filter the values is need from tukey test
+def filter_tukey_result(test_tukey):    
     values = test_tukey._results_table.data[1:]
     
     filter = []
@@ -66,21 +58,20 @@ def handle_tukey_result(test_tukey):
 
     return filter
 
+# Get the agms that reject null hypothesis
 def find_agms_to_compare(tukey_data):
-    true_index = []
-    false_index = []
+    group = [[], []]
     agm_to_compare = []
     agm_not_insert = []
     
     for e in tukey_data:
-        # print(e)
         r_value = e[-1]
         if r_value:
-            true_index.append(e)
+            group[0].append(e)
         else:
-            false_index.append(e)
+            group[1].append(e)
     
-    for e in false_index:
+    for e in group[1]:
         if not e[0] in agm_to_compare:
             agm_to_compare.append(e[0])
             agm_not_insert.append(e[1])
@@ -88,11 +79,9 @@ def find_agms_to_compare(tukey_data):
             agm_to_compare.append(e[1])
             agm_not_insert.append(e[0])
     
-    for e in true_index:
-        if not e[0] in agm_to_compare:
-            if not e[0] in agm_not_insert:
+    for e in group[0]:
+        if not e[0] in agm_to_compare and not e[0] in agm_not_insert:
                 agm_to_compare.append(e[0])
-        elif not e[1] in agm_to_compare:
-            if not e[1] in agm_not_insert:
+        elif not e[1] in agm_to_compare and not e[1] in agm_not_insert:
                 agm_to_compare.append(e[1])
     return agm_to_compare

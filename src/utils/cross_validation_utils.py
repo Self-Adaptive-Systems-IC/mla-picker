@@ -17,7 +17,7 @@ def cross_validation(X_data, y_data):
         y_data : array
             The target variable to try predict in the case of supervised learning.
     """
-    n_size = 10
+    n_size = 50
     results_tree = []
     results_random_forest = []
     results_svm = []
