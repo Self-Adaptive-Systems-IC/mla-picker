@@ -28,15 +28,22 @@ def tukey_test(results, agms):
     comp_agm = MultiComparison(results_df['accuracy'], results_df['agm'])
     test_tukey = comp_agm.tukeyhsd()
     
-    res = ols("accuracy ~ agm", results_df).fit()
-    pw = res.t_test_pairwise("agm",method="sh")
-    print(pw.result_frame)
-    print(pw.contrasts)
-    # print(pw.)
-    
-    # print("\n", test_tukey, "\n")
+    print("\n", test_tukey, "\n")
     # Create a data frame with th columns reject1, reject2 and total_sum
-    # tukey_data = handle_tukey_result(test_tukey)
+    tukey_data = handle_tukey_result(test_tukey)
+    agms_compare = find_agms_to_compare(tukey_data)
+    
+    best_results = []
+    agms2 = {}
+    i = 0
+    for element in agms_compare:
+        key=list(agms.keys())[list(agms.values()).index(element)]
+        best_results.append(results[key])
+        
+        agms2[i] = element
+        i += 1
+    
+    find_best_agm(best_results, agms2)  
     # Get the max value of column total_sum
     # max_value = tukey_data['total_sum'].max()
     # Get the line who have the max values of total_sum
@@ -48,13 +55,44 @@ def tukey_test(results, agms):
     #     best_results.append(results[key])
     # find_best_agm(best_results, agms)
     
-def handle_tukey_result(test_tukey):
-    tukey_data = pd.DataFrame(data=test_tukey._results_table.data[1:], columns = test_tukey._results_table.data[0])
-    group1_comp =tukey_data.loc[tukey_data.reject == True].groupby('group1').reject.count()
-    group2_comp = tukey_data.loc[tukey_data.reject == True].groupby('group2').reject.count()
-    tukey_data = pd.concat([group1_comp, group2_comp], axis=1)
-    tukey_data = tukey_data.fillna(0)
-    tukey_data.columns = ['reject1', 'reject2']
-    tukey_data['total_sum'] = tukey_data.reject1 + tukey_data.reject2
-    print(tukey_data)
-    return tukey_data
+def handle_tukey_result(test_tukey):    
+    values = test_tukey._results_table.data[1:]
+    
+    filter = []
+    for element in values:
+        filter.append([element[0], element[1], element[-1]])
+    
+    tukey_data = pd.DataFrame(data=filter, columns=['group1', 'group2', 'reject'])
+
+    return filter
+
+def find_agms_to_compare(tukey_data):
+    true_index = []
+    false_index = []
+    agm_to_compare = []
+    agm_not_insert = []
+    
+    for e in tukey_data:
+        # print(e)
+        r_value = e[-1]
+        if r_value:
+            true_index.append(e)
+        else:
+            false_index.append(e)
+    
+    for e in false_index:
+        if not e[0] in agm_to_compare:
+            agm_to_compare.append(e[0])
+            agm_not_insert.append(e[1])
+        elif not e[1] in agm_to_compare:
+            agm_to_compare.append(e[1])
+            agm_not_insert.append(e[0])
+    
+    for e in true_index:
+        if not e[0] in agm_to_compare:
+            if not e[0] in agm_not_insert:
+                agm_to_compare.append(e[0])
+        elif not e[1] in agm_to_compare:
+            if not e[1] in agm_not_insert:
+                agm_to_compare.append(e[1])
+    return agm_to_compare
