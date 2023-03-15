@@ -5,7 +5,7 @@ import pickle
 import numpy as np
 from tabulate import tabulate
 import statistics
-
+import time
 from utils.cross_validation_utils import cross_validation
 from utils.find_best_agm_utils import find_best_agm
 from utils.teste_tukey_utils import tukey_test
@@ -43,6 +43,7 @@ foo_helper = {
 }
 
 def main(file_path: str):
+    start = time.time()
     print(f"Running for the dataset {file_path}")
     # Get X and y values from file
     X_data, y_data = read_file(file_path)
@@ -50,7 +51,9 @@ def main(file_path: str):
     results = cross_validation(X_data, y_data)
     # Using tukey test to find the best agm
     tukey_test(results, agms)
+    end = time.time()
     print_table(results, agms)
+    print(f"\nElapsed {end-start}s")
     # op = menu()
     # foo_helper[op](results, agms)
     # find_best_agm(results, agms)
