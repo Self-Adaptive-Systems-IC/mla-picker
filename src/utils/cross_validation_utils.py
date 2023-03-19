@@ -17,7 +17,7 @@ def cross_validation(X_data, y_data):
         y_data : array
             The target variable to try predict in the case of supervised learning.
     """
-    n_size = 10
+    n_size = 1000
     results_tree = []
     results_random_forest = []
     results_svm = []
@@ -27,7 +27,7 @@ def cross_validation(X_data, y_data):
             0.05
         ).start()
     for i in range(n_size):
-        kfold = KFold(n_splits=5, shuffle=True, random_state=i)
+        kfold = KFold(n_splits=10, shuffle=True, random_state=i)
         # For decision tree
         decision_tree = DecisionTreeClassifier(criterion='log_loss', min_samples_leaf=15, min_samples_split=25, splitter='random')
         scores_tree = cross_val_score(decision_tree, X_data, y_data, cv=kfold)
