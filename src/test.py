@@ -32,8 +32,8 @@ def test():
     iters = [2, 5, 10, 20, 50]
     for iter in iters:
         # random_search = RandomizedSearchCV(estimator=DecisionTreeClassifier(), param_distributions=my_dict['decision_tree'], scoring='accuracy', cv=10, n_iter=iter)
-        random_search = RandomizedSearchCV(estimator=RandomForestClassifier(), param_distributions=my_dict['random_forest'], scoring='accuracy', cv=10, n_iter=iter)
-        # random_search = RandomizedSearchCV(estimator=SVC(cache_size=4096), param_distributions=my_dict['svc'], scoring='accuracy', cv=10, n_iter=iter)
+        #random_search = RandomizedSearchCV(estimator=RandomForestClassifiedr(), param_distributions=my_dict['random_forest'], scoring='accuracy', cv=10, n_iter=iter)
+        random_search = RandomizedSearchCV(estimator=SVC(cache_size=10240), param_distributions=my_dict['svc'], scoring='accuracy', cv=10, n_iter=iter)
         
         loader = Loader(f'Loading {10*iter} fits', 'Finished', 0.05).start()
         start = time.time()
@@ -56,8 +56,8 @@ def test():
 
     columns = ['time', 'cv', 'n_iter', 'fits', 'accuracy', 'config']
     # with open('results_randomizedcv_decision_tree.csv', 'w') as csv_file:
-    with open('results_randomizedcv_random_forest.csv', 'w') as csv_file:
-    # with open('results_randomizedcv_svc.csv', 'w') as csv_file:
+    # with open('results_randomizedcv_random_forest.csv', 'w') as csv_file:
+    with open('results_randomizedcv_svc.csv', 'w') as csv_file:
         filewriter = csv.writer(csv_file, delimiter=';', quotechar='|', quoting=csv.QUOTE_MINIMAL)
         filewriter.writerow(columns)
         filewriter.writerows(results)
