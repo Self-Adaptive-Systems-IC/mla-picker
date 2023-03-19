@@ -1,7 +1,7 @@
 
 decision_tree:
   criterion: ['gini', 'entropy', 'log_loss']
-  spliter: ['best', 'random']
+  splitter: ['best', 'random']
   min_samples_split: [3,5,7,10,15]
   min_samples_leaf: [2,5,10]
 random_forest:
@@ -14,5 +14,6 @@ random_forest:
 svc:
   C: [0.1, 1, 10, 100]
   kernel: [linear, 'rbf', 'poly']
-  gamma: [0.1, 1, 10, 100]
-  degree: [0, 1, 2, 3, 4, 5, 6]
+  gamma: ['scale', 'auto']
+  degree: [1, 2, 3]
+    #  cache_size: 4096

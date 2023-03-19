@@ -1,0 +1,6 @@
+time;cv;n_iter;fits;accuracy;config
+5.542381763458252;10;2;20;0.9716051896207583;{"n_estimators": 200, "min_samples_split": 10, "min_samples_leaf": 15, "max_features": 0.3, "max_depth": 40, "criterion": "gini"}
+33.21156597137451;10;5;50;0.9708047904191618;{"n_estimators": 200, "min_samples_split": 5, "min_samples_leaf": 7, "max_features": 0.5, "max_depth": 10, "criterion": "gini"}
+45.18769907951355;10;10;100;0.9728039920159679;{"n_estimators": 600, "min_samples_split": 5, "min_samples_leaf": 15, "max_features": 0.3, "max_depth": 70, "criterion": "entropy"}
+123.90324211120605;10;20;200;0.9724055888223553;{"n_estimators": 400, "min_samples_split": 5, "min_samples_leaf": 3, "max_features": 0.5, "max_depth": 50, "criterion": "gini"}
+327.82581210136414;10;50;500;0.9738043912175648;{"n_estimators": 200, "min_samples_split": 10, "min_samples_leaf": 7, "max_features": 0.3, "max_depth": 20, "criterion": "gini"}
