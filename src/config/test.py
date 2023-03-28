@@ -16,6 +16,8 @@ import sys
 from datetime import datetime
 import csv
 
+# from utils.Loader import Loader
+
 def test():
     with open('config_models.yml') as f:
         my_dict = yaml.safe_load(f)
@@ -27,29 +29,74 @@ def test():
     y_data = np.concatenate((y_train, y_test), axis=0)
     
     results = []
-    iters = [2, 5, 10, 20, 50]
-    for iter in iters:
-        random_search = RandomizedSearchCV(estimator=SVC(tol=0.01), param_distributions=my_dict['svc'], scoring='accuracy', cv=10, n_iter=iter, verbose=1)
-        
-        loader = Loader('Loading', 'Finished', 0.05).start()
-        start = datetime.now()
-        random_search.fit(X_data, y_data)
-        end = datetime.now()
-        elapsed = end-start
-        loader.stop()
+    # iters = [2, 5, 10, 20, 50]
+    # for iter in iters:
+    iter = 10
+    random_search_svc = GridSearchCV(estimator=SVC(tol=0.01), param_grid=my_dict['svc'], scoring='accuracy', cv=3, verbose=1)
+    random_search_tree = GridSearchCV(estimator=DecisionTreeClassifier(), param_grid=my_dict['decision_tree'], scoring='accuracy', cv=3, verbose=1)
+    random_search_forest = GridSearchCV(estimator=RandomForestClassifier(), param_grid=my_dict['random_forest'], scoring='accuracy', cv=3, verbose=1)
+    
+    
+    print('startreet - SVC')
+    # loader = Loader('Loading', 'Finished', 0.05).start()
+    start = datetime.now()
+    random_search_svc.fit(X_data, y_data)
+    # loader.stop()
 
-        best_param = random_search.best_params_
-        best_result = random_search.best_score_
-        print("Best Param: {} and Best Socore: {}".format(best_param, best_result))
-        r = [elapsed, 10, iter, best_result, best_param]
-        print(r)
-        results.append(r)
+    best_param = random_search_svc.best_params_
+    best_result = random_search_svc.best_score_
+    print("Best Param: {} and Best Socore: {}".format(best_param, best_result))
+    
+    end = datetime.now()
+    elapsed = end-start
+    print('end - SVC')
+    r = [elapsed, 10, iter, best_result, best_param]
+    # print(r)
+    results.append(r)
+    
+    print('start - TREE')
+    # loader = Loader('Loading', 'Finished', 0.05).start()
+    start = datetime.now()
+    random_search_tree.fit(X_data, y_data)
+    # loader.stop()
 
-    columns = ['time', 'cv', 'n_iter', 'accuracy', 'config']
-    with open('results.csv', 'wb') as csv_file:
-        filewriter = csv.writer(csv_file, delimiter=';', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-        filewriter.writerow(columns)
-        filewriter.writerows(results)
+    best_param = random_search_tree.best_params_
+    best_result = random_search_tree.best_score_
+    print("Best Param: {} and Best Socore: {}".format(best_param, best_result))
+    
+    end = datetime.now()
+    elapsed = end-start
+    print('end - TREE')
+    r = [elapsed, 10, iter, best_result, best_param]
+    # print(r)
+    results.append(r)
+    
+    print('start - FLOREST')
+    # loader = Loader('Loading', 'Finished', 0.05).start()
+    start = datetime.now()
+    random_search_forest.fit(X_data, y_data)
+    # loader.stop()
+
+    best_param = random_search_forest.best_params_
+    best_result = random_search_forest.best_score_
+    print("Best Param: {} and Best Socore: {}".format(best_param, best_result))
+    
+    end = datetime.now()
+    elapsed = end-start
+    print('end - FLOREST')
+    r = [elapsed, 10, iter, best_result, best_param]
+    # print(r)
+    results.append(r)
+    
+    
+    
+    print(results)
+
+    # columns = ['time', 'cv', 'n_iter', 'accuracy', 'config']
+    # with open('results.csv', 'wb') as csv_file:
+        # filewriter = csv.writer(csv_file, delimiter=';', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        # filewriter.writerow(columns)
+        # filewriter.writerows(results)
 
 if __name__ == "__main__":
     test()
