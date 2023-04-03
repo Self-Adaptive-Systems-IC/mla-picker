@@ -1,6 +1,0 @@
-time;cv;n_iter;fits;accuracy;config
-0.05613112449645996;10;2;20;0.9672055888223552;{"splitter": "best", "min_samples_split": 15, "min_samples_leaf": 2, "criterion": "entropy"}
-0.13334989547729492;10;5;50;0.9672047904191616;{"splitter": "random", "min_samples_split": 7, "min_samples_leaf": 2, "criterion": "entropy"}
-0.2638728618621826;10;10;100;0.9672047904191615;{"splitter": "best", "min_samples_split": 3, "min_samples_leaf": 5, "criterion": "gini"}
-0.48631739616394043;10;20;200;0.9684035928143713;{"splitter": "best", "min_samples_split": 15, "min_samples_leaf": 5, "criterion": "gini"}
-1.3504009246826172;10;50;500;0.969605988023952;{"splitter": "random", "min_samples_split": 10, "min_samples_leaf": 2, "criterion": "entropy"}
