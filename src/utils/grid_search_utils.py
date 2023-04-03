@@ -2,6 +2,7 @@ import yaml
 import pickle
 import numpy as np
 from sklearn.model_selection import GridSearchCV
+from tabulate import tabulate
 from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
@@ -22,7 +23,7 @@ def import_hyperparameters():
 def config_selector(X_data, y_data):
     hyperparameters = import_hyperparameters()
     results = []
-    cv_values = 2
+    cv_values = 10
     for keys, values in models.items():
         
         grid_search = GridSearchCV(
@@ -39,12 +40,17 @@ def config_selector(X_data, y_data):
         best_score = grid_search.best_score_
         end = datetime.now()
         print(f'End - {keys}')
-        
-        
-        print(f'Best param -> {best_result}')
-        print(f'Best score -> {best_score}')
-        print(f'Elapsed {end-start} (s)')
+        elapsed_time = end-start
+
+        result = [best_score, elapsed_time, best_result]
+        results.append(result)
+
+        # print(f'Best param -> {best_result}')
+        # print(f'Best score -> {best_score}')
+        # print(f'Elapsed {end-start} (s)')
 
         
+    columns = ['Score', 'Time', 'Result']
+    print(tabulate(results, headers=columns))
         
 
