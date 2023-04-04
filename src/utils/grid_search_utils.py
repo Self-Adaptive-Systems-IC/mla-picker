@@ -31,7 +31,8 @@ def config_selector(X_data, y_data):
             param_grid=hyperparameters[keys],
             scoring='accuracy',
             cv=cv_values,
-            verbose=1
+            verbose=1,
+            n_jobs=5
         )
         print(f'Start - {keys}')
         start = datetime.now()
