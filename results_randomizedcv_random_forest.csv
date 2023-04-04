@@ -1,6 +1,0 @@
-time;cv;n_iter;fits;accuracy;config
-22.76264452934265;10;2;20;0.9996;{"n_estimators": 400, "min_samples_split": 5, "min_samples_leaf": 15, "max_features": 0.9, "max_depth": 60, "criterion": "gini"}
-38.63841962814331;10;5;50;0.9996;{"n_estimators": 100, "min_samples_split": 2, "min_samples_leaf": 7, "max_features": 0.9, "max_depth": 40, "criterion": "entropy"}
-85.56875896453857;10;10;100;0.9996;{"n_estimators": 600, "min_samples_split": 10, "min_samples_leaf": 5, "max_features": 0.9, "max_depth": 100, "criterion": "entropy"}
-258.1599950790405;10;20;200;0.9996;{"n_estimators": 400, "min_samples_split": 2, "min_samples_leaf": 5, "max_features": 0.9, "max_depth": 50, "criterion": "entropy"}
-619.3666486740112;10;50;500;0.9996;{"n_estimators": 100, "min_samples_split": 5, "min_samples_leaf": 5, "max_features": 0.9, "max_depth": 80, "criterion": "gini"}

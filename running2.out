@@ -1,0 +1,14 @@
+Start - svc
+Fitting 10 folds for each of 72 candidates, totalling 720 fits
+End - svc
+Start - decision_tree
+Fitting 10 folds for each of 90 candidates, totalling 900 fits
+End - decision_tree
+Start - random_forest
+Fitting 10 folds for each of 162 candidates, totalling 1620 fits
+End - random_forest
+   Score  Time            Result
+--------  --------------  -------------------------------------------------------------------------------------------------------------
+0.974205  0:04:11.382482  {'C': 10, 'degree': 1, 'gamma': 'auto', 'kernel': 'rbf'}
+0.968805  0:00:01.097940  {'criterion': 'gini', 'min_samples_leaf': 2, 'min_samples_split': 7, 'splitter': 'best'}
+0.974605  0:02:05.865565  {'criterion': 'gini', 'max_depth': 25, 'max_features': 'sqrt', 'min_samples_leaf': 5, 'min_samples_split': 2}
