@@ -9,8 +9,10 @@ import time
 from utils.cross_validation_utils import cross_validation
 from utils.find_best_agm_utils import find_best_agm
 from utils.teste_tukey_utils import tukey_test
-from utils.grid_search_utils import config_selector
-# from utils.random_search_utils import config_selector
+# from utils.grid_search_utils import config_selector
+from utils.random_search_utils import config_selector
+from utils.tunning_ml_utils import hyperparameters_selector
+
 agms = {0:'tree', 1:'random_forest', 2:'svc'}
 
 # Define pickle file squeme
@@ -48,7 +50,8 @@ def main(file_path: str):
     # print(f"Running for the dataset {file_path}")
     # # Get X and y values from file
     X_data, y_data = read_file(file_path)
-    config_selector(X_data, y_data)
+    # config_selector(X_data, y_data)
+    hyperparameters_selector(X_data, y_data)
     # # Exacute cross validation between agms
     # results = cross_validation(X_data, y_data)
     # # Using tukey test to find the best agm
