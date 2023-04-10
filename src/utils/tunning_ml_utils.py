@@ -77,8 +77,8 @@ def hyperparameters_selector(X_data, y_data, op=0, cv_values=2, n_iter=20, n_job
         print(f'END - {keys}')
         params = search.best_params_ # Get the best param
         score = search.best_score_ # Get the best score
-        
-        configs.update(key=params) # Save the best param
+        # print(keys)
+        configs.update({keys: params}) # Save the best param
         results.append([score, (end-start), params]) # Save the score, time and best param, for printing
     # Print the results
     print(tabulate(results, headers=['Socre', 'Time', 'Result']))

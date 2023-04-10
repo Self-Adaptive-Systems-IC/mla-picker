@@ -34,7 +34,7 @@ def print_table(results: list, agms: dict):
     print("***********************************")
     
 def menu():
-    print("\n\033[1m--- MENU ---\033[0m")
+    print("\n--- MENU ---")
     print("0: Melhor algoritmo")
     print("1: Tabela com as médias")
     option = int(input("Select: "))
@@ -43,25 +43,26 @@ def menu():
 foo_helper = {
     0: find_best_agm,
     1: print_table
-}
+    }
 
 def main(file_path: str):
-    # start = time.time()
+    start = time.time()
     # print(f"Running for the dataset {file_path}")
     # # Get X and y values from file
     X_data, y_data = read_file(file_path)
     # config_selector(X_data, y_data)
-    hyperparameters_selector(X_data, y_data)
-    # # Exacute cross validation between agms
-    # results = cross_validation(X_data, y_data)
-    # # Using tukey test to find the best agm
-    # tukey_test(results, agms)
-    # end = time.time()
-    # print_table(results, agms)
-    # print(f"\nElapsed {end-start}s")
-    # # op = menu()
-    # # foo_helper[op](results, agms)
-    # # find_best_agm(results, agms)
+    x = hyperparameters_selector(X_data, y_data)
+    print(x)
+    # Exacute cross validation between agms
+    results = cross_validation(X_data, y_data, x)
+    # Using tukey test to find the best agm
+    tukey_test(results, agms)
+    end = time.time()
+    print_table(results, agms)
+    print(f"\nElapsed {end-start}s")
+    # op = menu()
+    # foo_helper[op](results, agms)
+    # find_best_agm(results, agms)
 
 if __name__ == "__main__":
     try:
