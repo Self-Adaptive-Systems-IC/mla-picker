@@ -45,12 +45,12 @@ def hyperparameters_selector(X_data, y_data, op=0, cv_values=2, n_iter=20, n_job
         n_jobs : int or None
             Number of jobs to run in parallel. None means 1 and -1 means using all processors.
     """
-    configs = {} # config dict with the results
+    configs = {} # config dict with the best params
     hyperparameters = import_hyperparameters() # get the hyperparameters from yaml file
-    results = [] # array to save all results
+    results = [] # array to save all results, for printing
     
     for keys, values in models.items():
-
+        # Select the algorithm for tunning
         if op == 0:
             search = RandomizedSearchCV(
                     estimator=values(), # Set the machine learning model
@@ -71,23 +71,15 @@ def hyperparameters_selector(X_data, y_data, op=0, cv_values=2, n_iter=20, n_job
                     n_jobs=n_jobs # Number of jobs to tun in parallel
                     )
         print(f'START - {keys}')
-        start = datetime.now()
-
-        search.fit(X_data, y_data)
-        
-        end = datetime.now()
+        start = datetime.now() # Start the fit
+        search.fit(X_data, y_data) # Training data with all set of params 
+        end = datetime.now() # End the fit
         print(f'END - {keys}')
-
-        params = search.best_params_
-        score = search.best_score_
-        elapsed_time = end-start
+        params = search.best_params_ # Get the best param
+        score = search.best_score_ # Get the best score
         
-        configs.update(key=params)
-        # configs[keys] = params
-        results.append([score, elapsed_time, params])
-
+        configs.update(key=params) # Save the best param
+        results.append([score, (end-start), params]) # Save the score, time and best param, for printing
+    # Print the results
     print(tabulate(results, headers=['Socre', 'Time', 'Result']))
-    return configs
-
-
-
+    return configs # Return de best params for each model
