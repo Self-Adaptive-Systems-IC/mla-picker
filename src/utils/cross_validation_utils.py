@@ -25,22 +25,22 @@ def cross_validation(X_data, y_data, params):
     loader = Loader('Running cv!!!', 'Complete cross-validation', 0.05).start()
     for i in range(n_size):
         # Define kfold for running cross_validation
-        kfold = KFold(n_splits=10, shuffle=True, random_state=i)
+        kfold = KFold(n_splits=3, shuffle=True, random_state=i)
         # For each machine learning model
         # Decision tree
         # decision_tree = DecisionTreeClassifier(criterion='log_loss', min_samples_leaf=15, min_samples_split=25, splitter='random')
         decision_tree = DecisionTreeClassifier(**params['decision_tree'])
-        scores_tree = cross_val_score(decision_tree, X_data, y_data, cv=kfold)
+        scores_tree = cross_val_score(decision_tree, X_data, y_data, cv=kfold, n_jobs=4)
         results_tree.append(scores_tree.mean())
         # Random forest   
         # random_forest = RandomForestClassifier(n_estimators=40,  criterion='gini', min_samples_leaf=1, min_samples_split=10)
         random_forest = RandomForestClassifier(**params['random_forest'])
-        scores_random_forest = cross_val_score(random_forest, X_data, y_data, cv=kfold)
+        scores_random_forest = cross_val_score(random_forest, X_data, y_data, cv=kfold, n_jobs=4)
         results_random_forest.append(scores_random_forest.mean())
         # SVC
         # svc = SVC(kernel = 'rbf', C = 100.0, tol=0.001)
         svc = SVC(**params['svc'])
-        scores_svc = cross_val_score(svc, X_data, y_data, cv=kfold)
+        scores_svc = cross_val_score(svc, X_data, y_data, cv=kfold, n_jobs=4)
         results_svc.append(scores_svc.mean())
     loader.stop() # End loader -> Stop loading animation
     # results = [results_tree, results_random_forest]
