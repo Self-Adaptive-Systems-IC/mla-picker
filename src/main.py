@@ -16,7 +16,8 @@ from utils.find_best_agm_utils import find_best_agm
 from utils.teste_tukey_utils import tukey_test
 from utils.grid_search_utils import config_selector
 
-from utils.neural_network_linear_regression_utils_1 import foo
+from utils.neural_network_earlystopping_training_utils import foo1
+from sklearn.metrics import accuracy_score, recall_score
 # from utils.random_search_utils import config_selector
 agms = {0:'tree', 1:'random_forest', 2:'svc'}
 
@@ -87,30 +88,38 @@ def main(file_path: str):
             html=False, # Prevents runtime display at command line
             verbose=False,
             fold_strategy='kfold',
-            fold=2,
+            fold=3,
             session_id=None, # Controls the randomness of experiment
-            n_jobs=-1 # How much jobs will running paralel
+            n_jobs=4 # How much jobs will running paralel
             )
 
     # Select the best model
     best_model = s.compare_models(
             turbo=False,
-            sort='Recall',
+            sort='Accuracy',
             #fold=5
             )
 
     # Tunning the best model
     tunned_model = s.tune_model(
             best_model,
-            n_iter=50,
+            n_iter=5,
             search_library='scikit-learn',
             search_algorithm='random',
-            optimize='Recall'
+            optimize='Accuracy'
             )
 
     print(tunned_model)
     
-    foo(s.X_train,s.y_train, s.X_test, s.y_test)
+    tunned_model_pred = tunned_model.predict(s.X_test)
+    recall_score_pycaret_model = recall_score(s.y_test, tunned_model_pred)
+    
+    recall_model_nr, model_nr = foo1(s.X_train,s.y_train, s.X_test, s.y_test)
+    
+    if(recall_model_nr > recall_score_pycaret_model):
+        print("Neural Network Earling Stop is best")
+    else:
+        print("Pycaret Model is best")
 
 
 

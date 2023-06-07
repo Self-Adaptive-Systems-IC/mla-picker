@@ -12,7 +12,7 @@ from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.callbacks import EarlyStopping
 import matplotlib.pyplot as plt
-
+from sklearn.metrics import accuracy_score, recall_score
 # Carrega os dados do arquivo CSV
 # path = 'C:/UFJF/Eng.Software/IC/repos/mla-picker/src/data/dataset_train_test_10k_failures.csv'
 # data = pd.read_csv(path, decimal=",")
@@ -49,22 +49,30 @@ def foo(X_train, y_train, X_test, y_test):
     # Avalia o modelo
     test_loss = model.evaluate(X_test, y_test)
     print("Test Loss:", test_loss)
-
+    print(model.predict(X_test))
     # Faz as previsões com o modelo treinado
     y_pred = model.predict(X_test)
     # Exibe as métricas de regressão
-    from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
-    print("R2 Score:", r2_score(y_test, y_pred))
+    from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error, recall_score
+    from sklearn.metrics import precision_recall_fscore_support as score
+    # precision, recall, fscore, support = score(y_test, y_pred)    
+    # tp_i = []
+    # for k in y_pred:
+        # if(y_test.iloc[k] == 1):
+            # tp_i.append(k)
+    # print("R2 Score:", r2_score(y_test, tp_i))
     print("MAE:", mean_absolute_error(y_test, y_pred))
     print("MSE:", mean_squared_error(y_test, y_pred))
-    
+             
     # # Plota o gráfico de regressão
     plt.scatter(y_test, y_pred)
     plt.xlabel('Custo real')
     plt.ylabel('Custo previsto')
     plt.show()
-
-    return None
+    # print(y_test)
+    # print(y_pred)
+    accuracy = accuracy_score(y_test, y_pred)
+    return accuracy 
 
 
 # # Define o modelo da rede neural
