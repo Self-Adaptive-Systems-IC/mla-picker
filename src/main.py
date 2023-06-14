@@ -6,8 +6,10 @@ import numpy as np
 from pycaret import classification
 from tabulate import tabulate
 import statistics
-import time
+# import time
 import pandas as pd
+import os
+from datetime import date#, time
 
 from pycaret.classification import *
 
@@ -16,7 +18,7 @@ from utils.find_best_agm_utils import find_best_agm
 from utils.teste_tukey_utils import tukey_test
 from utils.grid_search_utils import config_selector
 
-from utils.neural_network_earlystopping_training_utils import foo1
+from utils.neural_network_earlystopping_training_utils import early_stopping
 from sklearn.metrics import accuracy_score, recall_score
 # from utils.random_search_utils import config_selector
 agms = {0:'tree', 1:'random_forest', 2:'svc'}
@@ -34,6 +36,29 @@ def read_file_pkl(file: str):
 def read_file_csv(file: str):
     data = pd.read_csv(file, index_col=None)
     return data
+
+def save_feature_importance(setup, model):
+    print(os.path.abspath(os.getcwd()))
+    os.chdir('./src')
+    print(os.listdir())
+    print(os.path.abspath(os.getcwd()))
+    os.chdir('./data')
+    print(os.path.abspath(os.getcwd()))
+    os.chdir('./images')
+    print(os.path.abspath(os.getcwd()))  
+    setup.plot_model(model, plot = 'feature', save=True)
+    os.chdir('../../..')
+    
+def save_model(setup, model):
+    os.chdir('./data/saved_models')
+    setup.save_model(model, 'best_model' + '_' + str(date.today()))
+    os.chdir('../..')
+    
+def save_api(setup, model):
+    name = 'src/api/api_'+str(date.today())
+    # setup.create_api(model, 'src/api/api' + '_' + str(date.today()))
+    setup.create_api(model, name)
+    setup.create_docker(name)
 
 def print_table(results: list, agms: dict):
     result_t = []
@@ -106,20 +131,34 @@ def main(file_path: str):
             n_iter=5,
             search_library='scikit-learn',
             search_algorithm='random',
-            optimize='Accuracy'
+            optimize='Recall'
             )
 
     print(tunned_model)
     
-    tunned_model_pred = tunned_model.predict(s.X_test)
-    recall_score_pycaret_model = recall_score(s.y_test, tunned_model_pred)
+    # tunned_model_pred = tunned_model.predict(s.X_test)
+    # recall_score_pycaret_model = recall_score(s.y_test, tunned_model_pred)
     
-    recall_model_nr, model_nr = foo1(s.X_train,s.y_train, s.X_test, s.y_test)
+    model_pycaret = tunned_model
     
-    if(recall_model_nr > recall_score_pycaret_model):
-        print("Neural Network Earling Stop is best")
-    else:
-        print("Pycaret Model is best")
+    model_early_stopping = early_stopping(s.X_train,s.y_train, s.X_test, s.y_test)
+    
+    # print('-------------------------------------------------------------------')
+    # print('RECALL SCORE')
+    # print(f"\nNeural Network Earling Stop\t{recall_model_nr}")
+    # print(f"Pycaret Model\t\t\t{recall_score_pycaret_model}\n")
+    # print('-------------------------------------------------------------------')
+    
+    print('Compare and select between the early_stopping and pycaret model')
+    selected_model = compare_models(include=[model_pycaret, model_early_stopping], sort="Accuracy")
+    
+    # s.create_app(selected_model)
+    save_api(s, selected_model)
+
+    # s.create_app(selected_model)
+
+    # save_feature_importance(s, )
+    # save_feature_importance(s, model_early_stopping)
 
 
 

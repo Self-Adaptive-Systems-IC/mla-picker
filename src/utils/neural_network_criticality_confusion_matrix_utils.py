@@ -12,7 +12,8 @@ import seaborn as sns
 ##Matriz de confusao com base no atributo criticidade
 
 # Carrega os dados do arquivo CSV
-path = 'C:/UFJF/Eng.Software/IC/repos/mla-picker/src/data/dataset_train_test_10k_failures.csv'
+# path = 'C:/UFJF/Eng.Software/IC/repos/mla-picker/src/data/dataset_train_test_10k_failures.csv'
+path = './src/data/dataset_train_test_10k_failures.csv'
 data = pd.read_csv(path, decimal=",")
 
 # Seleciona apenas as colunas relevantes
