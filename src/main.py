@@ -50,15 +50,15 @@ def save_feature_importance(setup, model):
     os.chdir('../../..')
     
 def save_model(setup, model):
-    os.chdir('./data/saved_models')
-    setup.save_model(model, 'best_model' + '_' + str(date.today()))
-    os.chdir('../..')
+    os.chdir('./src/data/saved_models')
+    # setup.save_model(model, 'best_model' + '_' + str(date.today()))
+    setup.save_model(model, 'model')
+    os.chdir('../../..')
     
 def save_api(setup, model):
     name = 'src/api/api_'+str(date.today())
-    # setup.create_api(model, 'src/api/api' + '_' + str(date.today()))
     setup.create_api(model, name)
-    setup.create_docker(name)
+    # setup.create_docker(name) # To create a docker file
 
 def print_table(results: list, agms: dict):
     result_t = []
@@ -121,7 +121,7 @@ def main(file_path: str):
     # Select the best model
     best_model = s.compare_models(
             turbo=False,
-            sort='Accuracy',
+            sort='Recall',
             #fold=5
             )
 
@@ -136,24 +136,16 @@ def main(file_path: str):
 
     print(tunned_model)
     
-    # tunned_model_pred = tunned_model.predict(s.X_test)
-    # recall_score_pycaret_model = recall_score(s.y_test, tunned_model_pred)
-    
-    model_pycaret = tunned_model
-    
+
     model_early_stopping = early_stopping(s.X_train,s.y_train, s.X_test, s.y_test)
     
-    # print('-------------------------------------------------------------------')
-    # print('RECALL SCORE')
-    # print(f"\nNeural Network Earling Stop\t{recall_model_nr}")
-    # print(f"Pycaret Model\t\t\t{recall_score_pycaret_model}\n")
-    # print('-------------------------------------------------------------------')
+    print('Compare and select between the early_stopping and pycaret model -------------------------------------------')
+    selected_model = s.compare_models(include=[tunned_model, model_early_stopping], sort="Accuracy")
+    print('-----------------------------------------------------------------------------------------------------------')
+   
+    # save_api(s, selected_model)
     
-    print('Compare and select between the early_stopping and pycaret model')
-    selected_model = compare_models(include=[model_pycaret, model_early_stopping], sort="Accuracy")
-    
-    # s.create_app(selected_model)
-    save_api(s, selected_model)
+    save_model(s, selected_model)
 
     # s.create_app(selected_model)
 
