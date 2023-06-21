@@ -10,11 +10,11 @@ from pydantic import create_model
 app = FastAPI()
 
 # Load trained Pipeline
-model = load_model("api_dataset_edit")
+model = load_model("src/api/api_2023-06-15")
 
 # Create input/output pydantic models
-input_model = create_model("api_dataset_edit_input", **{'type_of_failure': 1.0, 'time_repair': 1.1272521018981934, 'cost': 0.23000000417232513, 'criticality': 0.7799999713897705, 'humid': 20.0, 'temp': 48.0})
-output_model = create_model("api_dataset_edit_output", **{"prediction":0, "score":0.8})
+input_model = create_model("src/api/api_2023-06-15_input", **{'Unnamed: 0': 1021.0, 'type_of_failure': 7.0, 'time_repair': 0.7208991646766663, 'cost': -0.028999999165534973, 'criticality': 0.6499999761581421, 'humid': 55.0, 'temp': 143.0})
+output_model = create_model("src/api/api_2023-06-15_output", prediction=0)
 
 
 # Define predict function
@@ -22,7 +22,7 @@ output_model = create_model("api_dataset_edit_output", **{"prediction":0, "score
 def predict(data: input_model):
     data = pd.DataFrame([data.dict()])
     predictions = predict_model(model, data=data)
-    return {"prediction": predictions["prediction_label"].iloc[0], "score": predictions["prediction_score"].iloc[0]}
+    return {"prediction": predictions["prediction_label"].iloc[0]}
 
 
 if __name__ == "__main__":

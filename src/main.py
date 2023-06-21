@@ -150,6 +150,7 @@ def main(file_path: str):
             turbo=False,
             sort='Recall',
             #fold=5
+            exclude=['dt']
             )
 
     # Tunning the best model
