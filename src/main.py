@@ -55,10 +55,33 @@ def save_model(setup, model):
     setup.save_model(model, 'model')
     os.chdir('../../..')
     
-def save_api(setup, model):
-    name = 'src/api/api_'+str(date.today())
+def save_api(setup, model, file_name=''):
+    name = 'api_'
+    if file_name == '':
+        name = name+str(date.today())
+    else:
+        name = name+file_name
     setup.create_api(model, name)
     # setup.create_docker(name) # To create a docker file
+    # Python program to replace text in a file
+    a1 = 'return {"prediction": predictions["prediction_label"].iloc[0]}'
+    a2 = 'return {"prediction": predictions["prediction_label"].iloc[0], "score": predictions["prediction_score"].iloc[0]}'
+    b1 = 'prediction=0'
+    c1 = 'prediction=1'
+    b2 = '**{"prediction":0, "score":0.8}'
+    
+    # Read in the file
+    with open(name+'.py', 'r') as file :
+        filedata = file.read()
+
+    # Replace the target string
+    filedata = filedata.replace(a1, a2)
+    filedata = filedata.replace(b1, b2)
+    filedata = filedata.replace(c1, b2)
+
+    # Write the file out again
+    with open(name+'.py', 'w') as file:
+        file.write(filedata)
 
 def print_table(results: list, agms: dict):
     result_t = []
@@ -97,6 +120,10 @@ def main(file_path: str):
     # # op = menu()
     # # foo_helper[op](results, agms)
     # # find_best_agm(results, agms)
+
+    file_name = (file_path.split("/")[-1].split('.')[0])
+
+
     target_position = -1
 
     data = pd.read_csv(file_path)
@@ -142,10 +169,10 @@ def main(file_path: str):
     print('Compare and select between the early_stopping and pycaret model -------------------------------------------')
     selected_model = s.compare_models(include=[tunned_model, model_early_stopping], sort="Accuracy")
     print('-----------------------------------------------------------------------------------------------------------')
-   
-    # save_api(s, selected_model)
+
+    save_api(s, selected_model, file_name)
     
-    save_model(s, selected_model)
+    # save_model(s, selected_model)
 
     # s.create_app(selected_model)
 
