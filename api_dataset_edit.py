@@ -13,7 +13,7 @@ app = FastAPI()
 model = load_model("api_dataset_edit")
 
 # Create input/output pydantic models
-input_model = create_model("api_dataset_edit_input", **{'type_of_failure': 1.0, 'time_repair': 1.1272521018981934, 'cost': 0.23000000417232513, 'criticality': 0.7799999713897705, 'humid': 20.0, 'temp': 48.0})
+input_model = create_model("api_dataset_edit_input", **{'type_of_failure': 3.0, 'time_repair': 0.31511762738227844, 'cost': 0.44999998807907104, 'criticality': 0.4129999876022339, 'humid': 21.0, 'temp': 148.0})
 output_model = create_model("api_dataset_edit_output", **{"prediction":0, "score":0.8})
 
 
